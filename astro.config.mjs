@@ -4,8 +4,11 @@ import react from '@astrojs/react';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   site: 'https://wurtle.dev',
+
   integrations: [
     mdx({
       remarkPlugins: [remarkMath],
@@ -13,5 +16,7 @@ export default defineConfig({
     }),
     react(),
   ],
+
   output: 'static',
+  adapter: cloudflare(),
 });
