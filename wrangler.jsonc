@@ -1,7 +1,7 @@
 {
   "name": "blog",
   "compatibility_date": "2026-06-04",
-  "kv_namespaces": [
-    { "binding": "SESSION", "id": "eea3b5f95d634c74aa4ad603c7e8e276" }
-  ]
+  "assets": {
+    "directory": "./dist"
+  }
 }
