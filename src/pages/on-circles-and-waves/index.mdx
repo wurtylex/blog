@@ -8,21 +8,12 @@ lastUpdated: 2026-03-19
 
 import SN from '../../components/SN.astro';
 import Cite from '../../components/Cite.astro';
+import Note from '../../components/Note.astro';
 import References from '../../components/References.astro';
 import { references } from './references.js';
 import FourierViz from './figures/FourierViz';
 
-<div style={{
-  borderLeft: '3px solid #e8956d',
-  background: 'rgba(232, 149, 109, 0.08)',
-  padding: '0.75rem 1rem',
-  marginTop: '2rem',
-  fontSize: '0.85em',
-  color: 'inherit',
-  opacity: 0.8,
-}}>
-  <strong>Note:</strong> This post was written by an AI and is temporarily here just to make sure posts can render properly.
-</div>
+<Note>This post was written by an AI and is temporarily here just to make sure posts can render properly.</Note>
 
 Joseph Fourier's central claim, published in 1822<Cite id="fourier1822" refs={references} />, was that *any* periodic
 signal — no matter how jagged or irregular — can be expressed as a sum of

@@ -15,23 +15,20 @@ const isRevised = updatedDate && updatedDate !== pubDate;
 
 <Base title={frontmatter.title} description={frontmatter.description}>
   <article>
-    <p style="margin-bottom: 2rem;">
+    <p class="back-link">
       <a href="/">← index</a>
     </p>
     <h1>{frontmatter.title}</h1>
 
-    <p class="subtitle">
-      {frontmatter.description}
-      <br />
-      <span style="display: block; margin-top: 0.5rem; opacity: 0.7; font-size: 0.9em;">
-        Published: <time datetime={pubDate}>{pubDate}</time>
-        {isRevised && (
-          <>
-            &nbsp; &middot; &nbsp;
-            Last Updated: <time datetime={updatedDate}>{updatedDate}</time>
-          </>
-        )}
-      </span>
+    {frontmatter.description && <p class="subtitle">{frontmatter.description}</p>}
+
+    <p class="post-meta">
+      Published <time datetime={pubDate}>{pubDate}</time>
+      {isRevised && (
+        <>
+          &nbsp;·&nbsp; Updated <time datetime={updatedDate}>{updatedDate}</time>
+        </>
+      )}
     </p>
 
     <section>
@@ -39,16 +36,3 @@ const isRevised = updatedDate && updatedDate !== pubDate;
     </section>
   </article>
 </Base>
-
-<style>
-  /* Ensuring the subtitle stays within Tufte's main column bounds */
-  .subtitle {
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-    line-height: 1.4;
-  }
-  
-  time {
-    font-variant-numeric: tabular-nums;
-  }
-</style>

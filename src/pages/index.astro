@@ -3,25 +3,34 @@ import Base from '../layouts/Base.astro';
 import '../styles/main.css';
 
 const postFiles = import.meta.glob('./**/index.mdx', { eager: true });
-const posts = Object.values(postFiles) as any[];
-const sorted = posts.sort((a, b) =>
-  new Date(b.frontmatter.date) - new Date(a.frontmatter.date)
+const posts = (Object.values(postFiles) as any[]).filter(
+  (post) => !post.frontmatter.draft
 );
+const sorted = posts.sort(
+  (a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date)
+);
+const fmtDate = (d: string) => new Date(d).toISOString().slice(0, 10);
 ---
 
 <Base title="Wurtle's Blog">
   <article>
-    <h1>Wurtle's Blog</h1>
-    <section>
-      {sorted.map(post => (
-        <p>
-          <a href={post.url}>{post.frontmatter.title}</a>
-          <br />
-          <span style="font-size: 0.85em; opacity: 0.6;">
-            {new Date(post.frontmatter.date).toISOString().slice(0, 10)}
-            {post.frontmatter.description && ` — ${post.frontmatter.description}`}
+    <header class="masthead">
+      <h1>Wurtle's Blog</h1>
+      <p class="tagline">Notes on math, code, and other curiosities.</p>
+    </header>
+    <section class="post-list">
+      {sorted.map((post) => (
+        <a class="post-entry" href={post.url}>
+          <time datetime={fmtDate(post.frontmatter.date)}>
+            {fmtDate(post.frontmatter.date)}
+          </time>
+          <span>
+            <span class="post-entry-title">{post.frontmatter.title}</span>
+            {post.frontmatter.description && (
+              <span class="post-entry-desc">{post.frontmatter.description}</span>
+            )}
           </span>
-        </p>
+        </a>
       ))}
     </section>
   </article>

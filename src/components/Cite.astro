@@ -2,4 +2,4 @@
 const { id, refs } = Astro.props;
 const num = Object.keys(refs).indexOf(id) + 1;
 ---
-<sup><a href={`#ref-${id}`} style="text-decoration: none;">[{num}]</a></sup>
+<sup><a href={`#ref-${id}`} class="no-tufte-underline">[{num}]</a></sup>

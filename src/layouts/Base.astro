@@ -1,5 +1,5 @@
 ---
-const { title, description } = Astro.props;
+const { title, description = "Notes on math, code, and other curiosities." } = Astro.props;
 ---
 <html lang="en">
   <head>
@@ -11,27 +11,28 @@ const { title, description } = Astro.props;
     <meta name="copyright" content="wurtylex" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="/32by32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+    <script is:inline>
+      // Apply the saved theme before first paint to avoid a flash.
+      (() => {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      })();
+    </script>
   </head>
   <body>
-    <div style="text-align: right; padding: 0rem 0rem 0;">
-    <button id="theme-toggle" style="
-      background: transparent;
-      border: 1px solid currentColor;
-      border-radius: 3px;
-      padding: 3px 10px;
-      font-family: inherit;
-      font-size: 11px;
-      cursor: pointer;
-      opacity: 0.5;
-      z-index: 9999;
-    ">carapace</button>
-    </div>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme">
+      <span class="theme-toggle-icon" aria-hidden="true">◓</span>
+      <span class="theme-toggle-label">carapace</span>
+    </button>
     <slot />
-    <footer style="margin-top: 2rem; padding: 0rem 0; border-top: 1px solid var(--border-color); font-size: 0.8em; opacity: 0.5;">
+    <footer class="site-footer">
       <p>© {new Date().getFullYear()} wurtylex · Built with <a href="https://astro.build">Astro</a></p>
     </footer>
     <script is:inline>
@@ -40,29 +41,22 @@ const { title, description } = Astro.props;
         const root = document.documentElement;
         const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-          root.setAttribute('data-theme', 'dark');
-          toggle.textContent = 'plastron';
-        } else if (saved === 'light') {
-          root.setAttribute('data-theme', 'light');
-          toggle.textContent = 'carapace';
-        } else {
-          toggle.textContent = systemDark ? 'plastron' : 'carapace';
-        }
+        const isDark = () => {
+          const current = root.getAttribute('data-theme');
+          return current === 'dark' || (!current && systemDark);
+        };
+
+        const label = () => {
+          toggle.querySelector('.theme-toggle-label').textContent =
+            isDark() ? 'plastron' : 'carapace';
+        };
+        label();
 
         toggle.addEventListener('click', () => {
-          const current = root.getAttribute('data-theme');
-          const isDark = current === 'dark' || (!current && systemDark);
-          if (isDark) {
-            root.setAttribute('data-theme', 'light');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = 'carapace';
-          } else {
-            root.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = 'plastron';
-          }
+          const next = isDark() ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          label();
         });
       });
     </script>
